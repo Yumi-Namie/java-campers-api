@@ -31,6 +31,7 @@ public class CamperService {
         return convertToResponseDto(createdCamper);
     }
 
+
     private CamperResponseDTO convertToResponseDto(Camper camper) {
         CamperResponseDTO dto = new CamperResponseDTO();
         dto.setId(camper.getId());
@@ -39,9 +40,11 @@ public class CamperService {
         return dto;
     }
 
+
     public List<Camper> getAllCampers() {
         return camperRepository.findAll();
     }
+
 
     public Camper getCamperById(Long id) {
         return camperRepository.findById(id).orElse(null);
