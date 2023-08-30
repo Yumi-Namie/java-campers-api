@@ -1,7 +1,11 @@
 package com.camper.demo.activity.entity;
 
+import com.camper.demo.camper.entity.Camper;
+import com.camper.demo.signup.entity.Signup;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -12,5 +16,8 @@ public class Activity {
     private Long id;
     private String name;
     private Integer difficulty;
+
+    @OneToMany(mappedBy = "activity")
+    private List<Signup> signups;
 
 }
