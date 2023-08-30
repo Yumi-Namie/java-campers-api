@@ -33,6 +33,7 @@ public class ActivityController {
         return ResponseEntity.ok(activityDTOs);
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<ActivityDTO> getActivityById(@PathVariable Long id) {
         Activity activity = activityService.getActivityById(id);

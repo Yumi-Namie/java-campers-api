@@ -34,6 +34,7 @@ public class ActivityService {
         return activityRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Activity not found with id: " + id));
     }
+
     public Activity createActivity(ActivityDTO activityDTO) {
         Activity newActivity = new Activity();
         newActivity.setName(activityDTO.getName());
