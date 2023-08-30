@@ -62,7 +62,6 @@ public class ActivityController {
         }
     }
 
-
     private ActivityDTO convertToDto(Activity activity) {
         ActivityDTO dto = new ActivityDTO();
         dto.setId(activity.getId());
