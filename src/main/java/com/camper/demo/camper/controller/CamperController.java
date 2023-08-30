@@ -7,6 +7,7 @@ import com.camper.demo.camper.dto.CamperResponseDTO;
 import com.camper.demo.camper.dto.CamperWithActivitiesDTO;
 import com.camper.demo.camper.entity.Camper;
 import com.camper.demo.camper.service.CamperService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class CamperController {
     }
 
     @PostMapping("/camper")
-    public ResponseEntity<CamperResponseDTO> createCamper(@RequestBody CamperDTO camperCreateDTO) {
+    public ResponseEntity<CamperResponseDTO> createCamper(@Valid @RequestBody CamperDTO camperCreateDTO) {
         CamperResponseDTO createdCamper = camperService.createCamper(camperCreateDTO);
         return ResponseEntity.ok().body(createdCamper);
     }

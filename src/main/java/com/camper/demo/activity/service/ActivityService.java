@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import com.camper.demo.ValidationError.NotFoundException;
 import com.camper.demo.activity.entity.Activity;
 import com.camper.demo.activity.repository.ActivityRepository;
 import com.camper.demo.activity.dto.ActivityDTO;

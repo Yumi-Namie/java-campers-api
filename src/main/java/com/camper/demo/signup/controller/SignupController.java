@@ -1,5 +1,6 @@
 package com.camper.demo.signup.controller;
 
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,7 @@ public class SignupController {
     public SignupController(SignupService signupService) {this.signupService = signupService;}
 
     @PostMapping
-    public ResponseEntity<SignupResponseDTO> createSignup(@RequestBody SignupRequestDTO signupRequestDTO) {
+    public ResponseEntity<SignupResponseDTO> createSignup(@RequestBody @Valid SignupRequestDTO signupRequestDTO) {
         log.info("Received signup request: {}", signupRequestDTO);
         Signup createdSignup = signupService.createSignup(signupRequestDTO);
 

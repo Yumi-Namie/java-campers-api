@@ -1,4 +1,4 @@
-package com.camper.demo.activity.service;
+package com.camper.demo.ValidationError;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {
