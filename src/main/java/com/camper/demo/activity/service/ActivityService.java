@@ -29,6 +29,11 @@ public class ActivityService {
 
         return activities;
     }
+
+    public Activity getActivityById(Long id) {
+        return activityRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Activity not found with id: " + id));
+    }
     public Activity createActivity(ActivityDTO activityDTO) {
         Activity newActivity = new Activity();
         newActivity.setName(activityDTO.getName());
@@ -53,6 +58,5 @@ public class ActivityService {
 
         activityRepository.delete(activity);
     }
-
 
 }

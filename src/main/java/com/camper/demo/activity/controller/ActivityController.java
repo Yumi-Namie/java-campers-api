@@ -32,6 +32,13 @@ public class ActivityController {
 
         return ResponseEntity.ok(activityDTOs);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ActivityDTO> getActivityById(@PathVariable Long id) {
+        Activity activity = activityService.getActivityById(id);
+        return ResponseEntity.ok(convertToDto(activity));
+    }
+
     @PostMapping
     public ResponseEntity<ActivityDTO> createActivity(@RequestBody ActivityDTO activity) {
         Activity createdActivity = activityService.createActivity(activity);
