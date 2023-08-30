@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class CamperService {
@@ -39,13 +39,11 @@ public class CamperService {
         return dto;
     }
 
-
     public List<Camper> getAllCampers() {
         return camperRepository.findAll();
     }
 
     public Camper getCamperById(Long id) {
-        Optional<Camper> camper = camperRepository.findById(id);
-        return camper.orElse(null);
+        return camperRepository.findById(id).orElse(null);
     }
 }

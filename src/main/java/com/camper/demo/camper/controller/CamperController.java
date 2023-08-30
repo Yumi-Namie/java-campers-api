@@ -30,23 +30,37 @@ public class CamperController {
 
 
     @GetMapping
-    public ResponseEntity<List<CamperDTO>> getAllCampers() {
-        List<CamperDTO> camperDTOs = camperService.getAllCampers()
-                .stream()
-                .map(this::convertToDto)
+    public ResponseEntity<List<CamperResponseDTO>> getAllCampers() {
+        List<Camper> allCampers = camperService.getAllCampers();
+        List<CamperResponseDTO> responseDTOs = allCampers.stream()
+                .map(this::convertToResponseDto)
                 .collect(Collectors.toList());
-
-        return ResponseEntity.ok(camperDTOs);
+        return ResponseEntity.ok().body(responseDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CamperDTO> getCamperById(@PathVariable Long id) {
+    public ResponseEntity<CamperResponseDTO> getCamperById(@PathVariable Long id) {
         Camper camper = camperService.getCamperById(id);
-        return ResponseEntity.ok(convertToDto(camper));
+
+        if (camper == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        CamperResponseDTO responseDTO = convertToResponseDto(camper);
+        return ResponseEntity.ok().body(responseDTO);
     }
 
-    private CamperDTO convertToDto(Camper camper) {
+
+    /*private CamperDTO convertToDto(Camper camper) {
         CamperDTO dto = new CamperDTO();
+        dto.setId(camper.getId());
+        dto.setName(camper.getName());
+        dto.setAge(camper.getAge());
+        return dto;
+    }*/
+
+    private CamperResponseDTO convertToResponseDto(Camper camper) {
+        CamperResponseDTO dto = new CamperResponseDTO();
         dto.setId(camper.getId());
         dto.setName(camper.getName());
         dto.setAge(camper.getAge());
