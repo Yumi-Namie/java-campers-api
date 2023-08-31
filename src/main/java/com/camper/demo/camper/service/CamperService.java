@@ -10,6 +10,7 @@ import com.camper.demo.camper.repository.CamperRepository;
 import com.camper.demo.signup.dto.SignupResponseDTO;
 import com.camper.demo.signup.entity.Signup;
 import com.camper.demo.signup.repository.SignupRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,11 @@ public class CamperService {
     }
 
     public CamperResponseDTO createCamper(CamperDTO camperCreateDTO) {
+
+        if (camperRepository.existsByUsername(camperCreateDTO.getUsername())) {
+            throw new EntityExistsException("Camper with username " + camperCreateDTO.getUsername() + " already exists.");
+        }
+
         Camper camper = new Camper();
         camper.setName(camperCreateDTO.getName());
         camper.setAge(camperCreateDTO.getAge());
