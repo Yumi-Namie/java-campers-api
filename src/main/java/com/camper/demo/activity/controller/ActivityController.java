@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.camper.demo.activity.entity.Activity;
 import com.camper.demo.activity.dto.ActivityDTO;
 import com.camper.demo.activity.service.ActivityService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class ActivityController {
     }
 
     @PostMapping("/activity")
-    public ResponseEntity<ActivityDTO> createActivity(@RequestBody ActivityDTO activity) {
+    public ResponseEntity<ActivityDTO> createActivity(@Valid @RequestBody ActivityDTO activity) {
         Activity createdActivity = activityService.createActivity(activity);
         return ResponseEntity.ok(convertToDto(createdActivity));
     }

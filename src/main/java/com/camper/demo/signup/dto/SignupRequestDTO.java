@@ -13,7 +13,6 @@ public class SignupRequestDTO {
     @NotNull(message = "Activity ID must not be null.")
     private Long activityId;
 
-    @NotBlank(message = "Invalid time: Empty")
     @NotNull(message = "Time field must not be null.")
     @Min(value = 0, message = "Time should be between 0 and 23.")
     @Max(value = 23, message = "Time should be between 0 and 23.")

@@ -3,6 +3,11 @@
 --DROP TABLE IF EXISTS camper;
 
 SELECT * FROM activity
+SELECT * FROM camper
+SELECT * FROM signup
+DELETE FROM camper;
+
+
 
 DROP TABLE IF EXISTS camper CASCADE;
 

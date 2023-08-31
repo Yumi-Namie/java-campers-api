@@ -3,13 +3,14 @@ package com.camper.demo.activity.service;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
+import jakarta.validation.Valid;
 
-import com.camper.demo.ValidationError.NotFoundException;
 import com.camper.demo.activity.entity.Activity;
 import com.camper.demo.activity.repository.ActivityRepository;
 import com.camper.demo.activity.dto.ActivityDTO;
 import com.camper.demo.signup.entity.Signup;
 import com.camper.demo.signup.repository.SignupRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +34,16 @@ public class ActivityService {
 
         activitiesIterable.forEach(activities::add);
 
+        if (activities.isEmpty()) {
+            throw new EntityNotFoundException("No activities found.");
+        }
+
         return activities;
     }
 
     public Activity getActivityById(Long id) {
         return activityRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Activity not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Activity with ID " + id + " not found."));
     }
 
     public Activity createActivity(ActivityDTO activityDTO) {
@@ -49,15 +54,21 @@ public class ActivityService {
         return activityRepository.save(newActivity);
     }
 
-    public Activity updateActivity(Long id, ActivityDTO activityDTO) {
+    public Activity updateActivity(Long id, @Valid ActivityDTO activityDTO) {
         Activity existingActivity = activityRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Activity not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Activity not found with id: " + id));
 
-        existingActivity.setName(activityDTO.getName());
-        existingActivity.setDifficulty(activityDTO.getDifficulty());
+        if (activityDTO.getName() != null && !activityDTO.getName().isEmpty()) {
+            existingActivity.setName(activityDTO.getName());
+        }
+
+        if (activityDTO.getDifficulty() != null) {
+            existingActivity.setDifficulty(activityDTO.getDifficulty());
+        }
 
         return activityRepository.save(existingActivity);
     }
+
 
     public boolean deleteActivity(Long id) {
         Optional<Activity> activityOptional = activityRepository.findById(id);
@@ -74,7 +85,7 @@ public class ActivityService {
             return true;
         }
 
-        return false; // Activity not found
+        throw new EntityNotFoundException("Activity not found with id: " + id);
     }
 
 
