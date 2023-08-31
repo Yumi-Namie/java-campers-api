@@ -2,7 +2,7 @@ package com.camper.demo.camper.dto;
 
 import com.camper.demo.activity.dto.ActivityDTO;
 
-import com.camper.demo.signup.dto.SignupResponseDTO;
+
 import lombok.Data;
 import java.util.List;
 

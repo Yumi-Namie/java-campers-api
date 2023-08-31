@@ -47,7 +47,7 @@ public class ActivityController {
     }
 
     @PutMapping("/activity/{id}")
-    public ResponseEntity<ActivityDTO> updateActivity(@PathVariable Long id, @RequestBody ActivityDTO activity) {
+    public ResponseEntity<ActivityDTO> updateActivity(@PathVariable Long id, @RequestBody @Valid ActivityDTO activity) {
         Activity updatedActivity = activityService.updateActivity(id, activity);
         return ResponseEntity.ok(convertToDto(updatedActivity));
     }
