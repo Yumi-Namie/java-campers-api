@@ -87,6 +87,4 @@ public class ActivityService {
 
         throw new EntityNotFoundException("Activity not found with id: " + id);
     }
-
-
 }

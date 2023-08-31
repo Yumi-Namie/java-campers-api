@@ -1,4 +1,5 @@
 package com.camper.demo.signup.service;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,19 +36,11 @@ public class SignupService {
     }
 
     public Signup createSignup(SignupRequestDTO signupRequestDTO) {
-        Camper camper = camperRepository.findById(signupRequestDTO.getCamperId()).orElse(null);
-        Activity activity = activityRepository.findById(signupRequestDTO.getActivityId()).orElse(null);
+        Camper camper = camperRepository.findById(signupRequestDTO.getCamperId())
+                .orElseThrow(() -> new EntityNotFoundException("Camper not found with id: " + signupRequestDTO.getCamperId()));
 
-        if (camper == null) {
-            log.warn("Camper with ID {} not found.", signupRequestDTO.getCamperId());
-        }
-        if (activity == null) {
-            log.warn("Activity with ID {} not found.", signupRequestDTO.getActivityId());
-        }
-
-        if (camper == null || activity == null) {
-            return null;
-        }
+        Activity activity = activityRepository.findById(signupRequestDTO.getActivityId())
+                .orElseThrow(() -> new EntityNotFoundException("Activity not found with id: " + signupRequestDTO.getActivityId()));
 
         Signup signup = new Signup();
         signup.setCamper(camper);
@@ -56,6 +49,8 @@ public class SignupService {
 
         return signupRepository.save(signup);
     }
+
+
 
     public List<Signup> getAllSignups() {
         Iterable<Signup> allSignupsIterable = signupRepository.findAll();

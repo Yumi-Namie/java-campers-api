@@ -10,6 +10,7 @@ import com.camper.demo.camper.repository.CamperRepository;
 import com.camper.demo.signup.dto.SignupResponseDTO;
 import com.camper.demo.signup.entity.Signup;
 import com.camper.demo.signup.repository.SignupRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,19 @@ public class CamperService {
 
         Camper createdCamper = camperRepository.save(camper);
         return convertToResponseDto(createdCamper);
+    }
+
+    public List<Camper> getAllCampers() {
+        List<Camper> campers = camperRepository.findAll();
+        if (campers.isEmpty()) {
+            throw new EntityNotFoundException("No campers found.");
+        }
+        return campers;
+    }
+
+    public Camper getCamperById(Long id) {
+        return camperRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Camper with ID " + id + " not found."));
     }
 
     public CamperWithActivitiesDTO getCamperWithActivitiesAndSignupsById(Long id) {
@@ -84,11 +98,5 @@ public class CamperService {
         return dto;
     }
 
-    public List<Camper> getAllCampers() {
-        return camperRepository.findAll();
-    }
 
-    public Camper getCamperById(Long id) {
-        return camperRepository.findById(id).orElse(null);
-    }
 }

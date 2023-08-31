@@ -28,18 +28,14 @@ public class SignupController {
     public SignupController(SignupService signupService) {this.signupService = signupService;}
 
     @PostMapping
-    public ResponseEntity<SignupResponseDTO> createSignup(@RequestBody @Valid SignupRequestDTO signupRequestDTO) {
-        log.info("Received signup request: {}", signupRequestDTO);
-        Signup createdSignup = signupService.createSignup(signupRequestDTO);
+    public ResponseEntity<SignupResponseDTO> createSignup(@Valid @RequestBody SignupRequestDTO signupRequestDTO) {
 
-        if (createdSignup == null) {
-            log.warn("Failed to create signup for request: {}", signupRequestDTO);
-            return ResponseEntity.badRequest().build();
-        }
+        Signup createdSignup = signupService.createSignup(signupRequestDTO);
 
         SignupResponseDTO responseDTO = convertToResponseDto(createdSignup);
         return ResponseEntity.ok().body(responseDTO);
     }
+
 
     private SignupResponseDTO convertToResponseDto(Signup signup) {
         SignupResponseDTO dto = new SignupResponseDTO();

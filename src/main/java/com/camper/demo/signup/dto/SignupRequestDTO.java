@@ -5,11 +5,11 @@ import jakarta.validation.constraints.*;
 @Data
 public class SignupRequestDTO {
 
-    @NotBlank(message = "Invalid camper ID: Empty")
+
     @NotNull(message = "Camper ID must not be null.")
     private Long camperId;
 
-    @NotBlank(message = "Invalid Activity ID: Empty")
+
     @NotNull(message = "Activity ID must not be null.")
     private Long activityId;
 

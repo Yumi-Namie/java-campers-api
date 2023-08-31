@@ -66,9 +66,6 @@ public class CamperController {
     }
 
 
-
-
-
     @GetMapping("/campers")
     public ResponseEntity<List<CamperResponseDTO>> getAllCampers() {
         List<Camper> allCampers = camperService.getAllCampers();
