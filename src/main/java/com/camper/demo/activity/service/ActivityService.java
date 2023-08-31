@@ -3,6 +3,7 @@ package com.camper.demo.activity.service;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
+
 import jakarta.validation.Valid;
 
 import com.camper.demo.activity.entity.Activity;
@@ -47,9 +48,10 @@ public class ActivityService {
     }
 
     public Activity createActivity(ActivityDTO activityDTO) {
-        Activity newActivity = new Activity();
-        newActivity.setName(activityDTO.getName());
-        newActivity.setDifficulty(activityDTO.getDifficulty());
+        Activity newActivity = Activity.builder()
+                .name(activityDTO.getName())
+                .difficulty(activityDTO.getDifficulty())
+                .build();
 
         return activityRepository.save(newActivity);
     }

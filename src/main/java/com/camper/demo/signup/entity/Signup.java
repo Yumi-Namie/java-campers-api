@@ -4,12 +4,12 @@ import com.camper.demo.activity.entity.Activity;
 import com.camper.demo.camper.entity.Camper;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
+@Builder
 public class Signup {
 
     @Id

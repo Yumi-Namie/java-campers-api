@@ -64,10 +64,11 @@ public class ActivityController {
     }
 
     private ActivityDTO convertToDto(Activity activity) {
-        ActivityDTO dto = new ActivityDTO();
-        dto.setId(activity.getId());
-        dto.setName(activity.getName());
-        dto.setDifficulty(activity.getDifficulty());
+        ActivityDTO dto = ActivityDTO.builder()
+                .id(activity.getId())
+                .name(activity.getName())
+                .difficulty(activity.getDifficulty())
+                .build();
         return dto;
     }
 }

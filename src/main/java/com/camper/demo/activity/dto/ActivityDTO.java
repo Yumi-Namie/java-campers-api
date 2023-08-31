@@ -1,9 +1,11 @@
 package com.camper.demo.activity.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class ActivityDTO {
 
     private Long id;

@@ -42,10 +42,16 @@ public class SignupService {
         Activity activity = activityRepository.findById(signupRequestDTO.getActivityId())
                 .orElseThrow(() -> new EntityNotFoundException("Activity not found with id: " + signupRequestDTO.getActivityId()));
 
-        Signup signup = new Signup();
+  /*      Signup signup = new Signup();
         signup.setCamper(camper);
         signup.setActivity(activity);
-        signup.setTime(signupRequestDTO.getTime());
+        signup.setTime(signupRequestDTO.getTime());*/
+
+        Signup signup = Signup.builder()
+                .camper(camper)
+                .activity(activity)
+                .time(signupRequestDTO.getTime())
+                .build();
 
         return signupRepository.save(signup);
     }
