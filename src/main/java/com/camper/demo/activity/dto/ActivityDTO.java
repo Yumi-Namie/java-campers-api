@@ -1,8 +1,10 @@
 package com.camper.demo.activity.dto;
 
+import com.camper.demo.activity.entity.Activity;
 import jakarta.validation.constraints.*;
 
 import lombok.Data;
+import org.modelmapper.ModelMapper;
 
 @Data
 public class ActivityDTO {
@@ -28,5 +30,7 @@ public class ActivityDTO {
         this.name = name;
         this.difficulty = difficulty;
     }
+
+
 
 }
