@@ -16,12 +16,12 @@ import org.modelmapper.ModelMapper;
 public class ActivityController {
 
     private final ActivityService activityService;
-    private final ModelMapper modelMapper;
+    private final ModelMapper mapper;
 
     @Autowired
     public ActivityController(ActivityService activityService, ModelMapper modelMapper) {
         this.activityService = activityService;
-        this.modelMapper = modelMapper;
+        this.mapper = mapper;
     }
 
 
@@ -29,7 +29,7 @@ public class ActivityController {
     public ResponseEntity<List<ActivityDTO>> getAllActivities() {
         List<Activity> activities = activityService.getAllActivities();
         List<ActivityDTO> activityDTOs = activities.stream()
-                .map(activity -> modelMapper.map(activity, ActivityDTO.class))
+                .map(activity -> mapper.map(activity, ActivityDTO.class))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(activityDTOs);
@@ -38,21 +38,21 @@ public class ActivityController {
     @GetMapping("/activity/{id}")
     public ResponseEntity<ActivityDTO> getActivityById(@PathVariable Long id) {
         Activity activity = activityService.getActivityById(id);
-        return ResponseEntity.ok(modelMapper.map(activity, ActivityDTO.class));
+        return ResponseEntity.ok(mapper.map(activity, ActivityDTO.class));
     }
 
     @PostMapping("/activity")
     public ResponseEntity<ActivityDTO> createActivity(@Valid @RequestBody ActivityDTO activityDTO) {
         Activity createdActivity = activityService.createActivity(activityDTO);
-        return ResponseEntity.ok(modelMapper.map(createdActivity, ActivityDTO.class));
+        return ResponseEntity.ok(mapper.map(createdActivity, ActivityDTO.class));
     }
 
 
     @PutMapping("/activity/{id}")
     public ResponseEntity<ActivityDTO> updateActivity(@PathVariable Long id, @RequestBody @Valid ActivityDTO updatedActivityDTO) {
-        Activity updatedActivity = modelMapper.map(updatedActivityDTO, Activity.class);
+        Activity updatedActivity = mapper.map(updatedActivityDTO, Activity.class);
         updatedActivity = activityService.updateActivity(id, updatedActivityDTO);
-        return ResponseEntity.ok(modelMapper.map(updatedActivity, ActivityDTO.class));
+        return ResponseEntity.ok(mapper.map(updatedActivity, ActivityDTO.class));
     }
 
 
@@ -68,10 +68,11 @@ public class ActivityController {
     }
 
     private ActivityDTO convertToDto(Activity activity) {
-        ActivityDTO dto = new ActivityDTO();
+        ActivityDTO activityDTO = mapper.map(activity, ActivityDTO.class);
+    /*  ActivityDTO dto = new ActivityDTO();
         dto.setId(activity.getId());
         dto.setName(activity.getName());
-        dto.setDifficulty(activity.getDifficulty());
+        dto.setDifficulty(activity.getDifficulty());*/
         return dto;
     }
 }

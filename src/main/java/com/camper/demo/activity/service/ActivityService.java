@@ -12,20 +12,23 @@ import com.camper.demo.activity.dto.ActivityDTO;
 import com.camper.demo.signup.entity.Signup;
 import com.camper.demo.signup.repository.SignupRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ActivityService {
 
+    private ModelMapper mapper;
     private final ActivityRepository activityRepository;
     private final SignupRepository signupRepository;
 
 
     @Autowired
-    public ActivityService(ActivityRepository activityRepository, SignupRepository signupRepository) {
+    public ActivityService(ActivityRepository activityRepository, SignupRepository signupRepository,ModelMapper mapper) {
         this.activityRepository = activityRepository;
         this.signupRepository = signupRepository;
+        this.mapper = mapper;
     }
 
 
