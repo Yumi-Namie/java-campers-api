@@ -5,9 +5,10 @@ import com.camper.demo.activity.dto.ActivityDTO;
 import com.camper.demo.activity.entity.Activity;
 import com.camper.demo.activity.service.ActivityService;
 import com.camper.demo.camper.dto.CamperDTO;
+import com.camper.demo.camper.dto.CamperMapper;
 import com.camper.demo.camper.dto.CamperResponseDTO;
-import com.camper.demo.camper.dto.CamperWithActivitiesDTO;
 import com.camper.demo.camper.entity.Camper;
+import com.camper.demo.camper.repository.CamperRepository;
 import com.camper.demo.camper.service.CamperService;
 
 import com.camper.demo.signup.entity.Signup;
@@ -16,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -36,13 +36,15 @@ class CamperControllerUnitTest {
     @Mock
     private ActivityService activityServiceMock;
     @Mock
-    private ModelMapper modelMapper;
+    private CamperRepository camperRepositoryMock;
+    @Mock
+    private CamperMapper modelMapper;
 
     @BeforeEach
     void setUp() {
 
-        modelMapper = new ModelMapper();
-        camperController = new CamperController(camperServiceMock, modelMapper);
+        modelMapper = new CamperMapper();
+        camperController = new CamperController(camperServiceMock, modelMapper, camperRepositoryMock);
         activityController = new ActivityController(activityServiceMock, modelMapper);
     }
 

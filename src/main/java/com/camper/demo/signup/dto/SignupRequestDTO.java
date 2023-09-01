@@ -2,7 +2,10 @@ package com.camper.demo.signup.dto;
 
 import lombok.Data;
 import jakarta.validation.constraints.*;
+import lombok.NoArgsConstructor;
+
 @Data
+@NoArgsConstructor
 public class SignupRequestDTO {
 
 
@@ -18,12 +21,4 @@ public class SignupRequestDTO {
     @Max(value = 23, message = "Time should be between 0 and 23.")
     private Integer time;
 
-    public SignupRequestDTO() {
-    }
-
-    public SignupRequestDTO(Long camperId, Long activityId, Integer time) {
-        this.camperId = camperId;
-        this.activityId = activityId;
-        this.time = time;
-    }
 }

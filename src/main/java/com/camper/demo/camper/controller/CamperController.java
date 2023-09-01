@@ -3,11 +3,14 @@ package com.camper.demo.camper.controller;
 import com.camper.demo.activity.dto.ActivityDTO;
 import com.camper.demo.activity.entity.Activity;
 import com.camper.demo.camper.dto.CamperDTO;
+import com.camper.demo.camper.dto.CamperMapper;
 import com.camper.demo.camper.dto.CamperResponseDTO;
 import com.camper.demo.camper.dto.CamperWithActivitiesDTO;
 import com.camper.demo.camper.entity.Camper;
+import com.camper.demo.camper.repository.CamperRepository;
 import com.camper.demo.camper.service.CamperService;
 import com.camper.demo.signup.entity.Signup;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +25,14 @@ import java.util.stream.Collectors;
 public class CamperController {
 
     private final CamperService camperService;
-    private final ModelMapper mapper;
+    private final CamperRepository camperRepository;
+    private final CamperMapper mapper;
 
     @Autowired
-    public CamperController(CamperService camperService, ModelMapper mapper) {
+    public CamperController(CamperService camperService, CamperMapper mapper, CamperRepository camperRepository) {
         this.camperService = camperService;
         this.mapper = mapper;
+        this.camperRepository = camperRepository;
     }
 
     @PostMapping("/camper")
@@ -38,15 +43,10 @@ public class CamperController {
 
     @GetMapping("/camper/{id}")
     public ResponseEntity<CamperWithActivitiesDTO> getCamperById(@PathVariable Long id) {
-        Camper camper = camperService.getCamperById(id);
-
-        if (camper == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        CamperWithActivitiesDTO responseDTO = mapper.map(camper, CamperWithActivitiesDTO.class);
+        CamperWithActivitiesDTO responseDTO = camperService.getCamperWithActivitiesAndSignupsById(id);
         return ResponseEntity.ok().body(responseDTO);
     }
+
 
 
     @GetMapping("/campers")
@@ -67,18 +67,17 @@ public class CamperController {
         return camperResponseDTO;
     }
 
-    private CamperWithActivitiesDTO convertToResponseDtoWithActivities(Camper camper) {
-        CamperWithActivitiesDTO camperWithActivitiesDTO = mapper.map(camper, CamperWithActivitiesDTO.class);
+    public CamperWithActivitiesDTO getCamperWithActivitiesAndSignupsById(Long id) {
+        Camper camper = camperRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Camper with ID " + id + " not found."));
 
-        List<ActivityDTO> activityDTOs = camper.getSignups().stream()
-                .map(signup -> mapper.map(signup.getActivity(), ActivityDTO.class))
-                .collect(Collectors.toList());
-
-        camperWithActivitiesDTO.setActivities(activityDTOs);
-        return camperWithActivitiesDTO;
-
-        }
+        return mapper.map(camper, CamperWithActivitiesDTO.class);
     }
+
+
+
+}
+
 
 
 
