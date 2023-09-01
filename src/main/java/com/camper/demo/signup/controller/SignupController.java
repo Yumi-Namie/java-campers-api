@@ -29,28 +29,33 @@ public class SignupController {
 
     @PostMapping
     public ResponseEntity<SignupResponseDTO> createSignup(@Valid @RequestBody SignupRequestDTO signupRequestDTO) {
-
         Signup createdSignup = signupService.createSignup(signupRequestDTO);
 
-        SignupResponseDTO responseDTO = convertToResponseDto(createdSignup);
+        SignupResponseDTO responseDTO = SignupResponseDTO.builder()
+                .id(createdSignup.getId())
+                .camperId(createdSignup.getCamper().getId())
+                .activityId(createdSignup.getActivity().getId())
+                .time(createdSignup.getTime())
+                .build();
+
         return ResponseEntity.ok().body(responseDTO);
     }
 
 
-    private SignupResponseDTO convertToResponseDto(Signup signup) {
-        SignupResponseDTO dto = new SignupResponseDTO();
-        dto.setId(signup.getId());
-        dto.setCamperId(signup.getCamper().getId());
-        dto.setActivityId(signup.getActivity().getId());
-        dto.setTime(signup.getTime());
-        return dto;
+    private SignupResponseDTO convertSignupToDto(Signup signup) {
+        return SignupResponseDTO.builder()
+                .id(signup.getId())
+                .camperId(signup.getCamper().getId())
+                .activityId(signup.getActivity().getId())
+                .time(signup.getTime())
+                .build();
     }
 
     @GetMapping
     public ResponseEntity<List<SignupResponseDTO>> getAllSignups() {
         List<Signup> allSignups = signupService.getAllSignups();
         List<SignupResponseDTO> responseDTOs = allSignups.stream()
-                .map(this::convertToResponseDto)
+                .map(this::convertSignupToDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(responseDTOs);
     }

@@ -2,14 +2,12 @@ package com.camper.demo.activity.entity;
 
 import com.camper.demo.signup.entity.Signup;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Entity
 @Data
-@Builder
 public class Activity {
 
     @Id

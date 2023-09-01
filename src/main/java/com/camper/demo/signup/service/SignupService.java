@@ -10,6 +10,7 @@ import com.camper.demo.camper.entity.Camper;
 import com.camper.demo.activity.entity.Activity;
 import com.camper.demo.camper.repository.CamperRepository;
 import com.camper.demo.signup.dto.SignupRequestDTO;
+import com.camper.demo.signup.dto.SignupResponseDTO;
 import com.camper.demo.signup.entity.Signup;
 import com.camper.demo.signup.repository.SignupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,19 +43,13 @@ public class SignupService {
         Activity activity = activityRepository.findById(signupRequestDTO.getActivityId())
                 .orElseThrow(() -> new EntityNotFoundException("Activity not found with id: " + signupRequestDTO.getActivityId()));
 
-  /*      Signup signup = new Signup();
-        signup.setCamper(camper);
-        signup.setActivity(activity);
-        signup.setTime(signupRequestDTO.getTime());*/
-
-        Signup signup = Signup.builder()
-                .camper(camper)
-                .activity(activity)
-                .time(signupRequestDTO.getTime())
-                .build();
+        Signup signup = new Signup(null, camper, activity, signupRequestDTO.getTime());
 
         return signupRepository.save(signup);
     }
+
+
+
 
 
 

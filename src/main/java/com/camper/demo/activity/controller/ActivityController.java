@@ -22,7 +22,6 @@ public class ActivityController {
         this.activityService = activityService;
     }
 
-
     @GetMapping("/activities")
     public ResponseEntity<List<ActivityDTO>> getAllActivities() {
         List<Activity> activities = activityService.getAllActivities();
@@ -33,7 +32,6 @@ public class ActivityController {
         return ResponseEntity.ok(activityDTOs);
     }
 
-
     @GetMapping("/activity/{id}")
     public ResponseEntity<ActivityDTO> getActivityById(@PathVariable Long id) {
         Activity activity = activityService.getActivityById(id);
@@ -41,14 +39,14 @@ public class ActivityController {
     }
 
     @PostMapping("/activity")
-    public ResponseEntity<ActivityDTO> createActivity(@Valid @RequestBody ActivityDTO activity) {
-        Activity createdActivity = activityService.createActivity(activity);
+    public ResponseEntity<ActivityDTO> createActivity(@Valid @RequestBody ActivityDTO activityDTO) {
+        Activity createdActivity = activityService.createActivity(activityDTO);
         return ResponseEntity.ok(convertToDto(createdActivity));
     }
 
     @PutMapping("/activity/{id}")
-    public ResponseEntity<ActivityDTO> updateActivity(@PathVariable Long id, @RequestBody @Valid ActivityDTO activity) {
-        Activity updatedActivity = activityService.updateActivity(id, activity);
+    public ResponseEntity<ActivityDTO> updateActivity(@PathVariable Long id, @RequestBody @Valid ActivityDTO activityDTO) {
+        Activity updatedActivity = activityService.updateActivity(id, activityDTO);
         return ResponseEntity.ok(convertToDto(updatedActivity));
     }
 
@@ -64,11 +62,10 @@ public class ActivityController {
     }
 
     private ActivityDTO convertToDto(Activity activity) {
-        ActivityDTO dto = ActivityDTO.builder()
-                .id(activity.getId())
-                .name(activity.getName())
-                .difficulty(activity.getDifficulty())
-                .build();
+        ActivityDTO dto = new ActivityDTO();
+        dto.setId(activity.getId());
+        dto.setName(activity.getName());
+        dto.setDifficulty(activity.getDifficulty());
         return dto;
     }
 }

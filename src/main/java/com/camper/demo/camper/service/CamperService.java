@@ -36,12 +36,12 @@ public class CamperService {
             throw new EntityExistsException("Camper with username " + camperCreateDTO.getUsername() + " already exists.");
         }
 
-        Camper camper = Camper.builder()
-                .name(camperCreateDTO.getName())
-                .age(camperCreateDTO.getAge())
-                .username(camperCreateDTO.getUsername())
-                .password(camperCreateDTO.getPassword())
-                .build();
+        Camper camper = new Camper(
+                camperCreateDTO.getName(),
+                camperCreateDTO.getAge(),
+                camperCreateDTO.getUsername(),
+                camperCreateDTO.getPassword()
+        );
 
         Camper createdCamper = camperRepository.save(camper);
         return convertToResponseDto(createdCamper);
@@ -65,44 +65,21 @@ public class CamperService {
         Camper camper = camperRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Camper with ID " + id + " not found."));
 
-        return CamperWithActivitiesDTO.builder()
-                .id(camper.getId())
-                .name(camper.getName())
-                .age(camper.getAge())
-                .activities(camper.getSignups().stream()
+        return new CamperWithActivitiesDTO(
+                camper.getId(),
+                camper.getName(),
+                camper.getAge(),
+                camper.getSignups().stream()
                         .map(signup -> convertActivityToDto(signup.getActivity()))
-                        .collect(Collectors.toList()))
-                .build();
+                        .collect(Collectors.toList())
+        );
     }
-
-
 
     private CamperResponseDTO convertToResponseDto(Camper camper) {
-        return CamperResponseDTO.builder()
-                .id(camper.getId())
-                .name(camper.getName())
-                .age(camper.getAge())
-                .build();
+        return new CamperResponseDTO(camper.getId(), camper.getName(), camper.getAge());
     }
-
 
     private ActivityDTO convertActivityToDto(Activity activity) {
-        ActivityDTO dto = ActivityDTO.builder()
-                .id(activity.getId())
-                .name(activity.getName())
-                .difficulty(activity.getDifficulty())
-                .build();
-        return dto;
+        return new ActivityDTO(activity.getId(), activity.getName(), activity.getDifficulty());
     }
-
-    private SignupResponseDTO convertSignupToDto(Signup signup) {
-        SignupResponseDTO dto = new SignupResponseDTO();
-        dto.setId(signup.getId());
-        dto.setCamperId(signup.getCamper().getId());
-        dto.setActivityId(signup.getActivity().getId());
-        dto.setTime(signup.getTime());
-        return dto;
-    }
-
-
 }

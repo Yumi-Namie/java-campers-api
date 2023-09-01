@@ -1,11 +1,10 @@
 package com.camper.demo.camper.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
+
 public class CamperDTO {
 
     private Long id;
@@ -29,4 +28,15 @@ public class CamperDTO {
     @NotBlank(message = "Password field should not be empty.")
     @Size(min = 8, message = "Password should have at least 8 characters.")
     private String password;
+
+    public CamperDTO(Long id, String name, Integer age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+    public CamperDTO() {
+
+    }
+
+
 }

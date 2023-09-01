@@ -7,11 +7,13 @@ import com.camper.demo.camper.dto.CamperResponseDTO;
 import com.camper.demo.camper.dto.CamperWithActivitiesDTO;
 import com.camper.demo.camper.entity.Camper;
 import com.camper.demo.camper.service.CamperService;
+import com.camper.demo.signup.entity.Signup;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,36 +55,33 @@ public class CamperController {
         return ResponseEntity.ok().body(responseDTOs);
     }
 
-    private ActivityDTO convertActivityToDto(Activity activity) {
-        ActivityDTO dto = ActivityDTO.builder()
-                .id(activity.getId())
-                .name(activity.getName())
-                .difficulty(activity.getDifficulty())
-                .build();
+    private CamperResponseDTO convertToResponseDto(Camper camper) {
+        CamperResponseDTO dto = new CamperResponseDTO();
+        dto.setId(camper.getId());
+        dto.setName(camper.getName());
+        dto.setAge(camper.getAge());
         return dto;
     }
-    private CamperResponseDTO convertToResponseDto(Camper camper) {
-        return CamperResponseDTO.builder()
-                .id(camper.getId())
-                .name(camper.getName())
-                .age(camper.getAge())
-                .build();
-    }
-
 
     private CamperWithActivitiesDTO convertToResponseDtoWithActivities(Camper camper) {
-        return CamperWithActivitiesDTO.builder()
-                .id(camper.getId())
-                .name(camper.getName())
-                .age(camper.getAge())
-                .activities(camper.getSignups().stream()
-                        .map(signup -> convertActivityToDto(signup.getActivity()))
-                        .collect(Collectors.toList()))
-                .build();
+        CamperWithActivitiesDTO dto = new CamperWithActivitiesDTO();
+        dto.setId(camper.getId());
+        dto.setName(camper.getName());
+        dto.setAge(camper.getAge());
+
+        List<ActivityDTO> activityDTOs = new ArrayList<>();
+        for (Signup signup : camper.getSignups()) {
+            Activity activity = signup.getActivity();
+            ActivityDTO activityDTO = new ActivityDTO();
+            activityDTO.setId(activity.getId());
+            activityDTO.setName(activity.getName());
+            activityDTO.setDifficulty(activity.getDifficulty());
+            activityDTOs.add(activityDTO);
+        }
+
+        dto.setActivities(activityDTOs);
+        return dto;
     }
-
-
-
 }
 
 

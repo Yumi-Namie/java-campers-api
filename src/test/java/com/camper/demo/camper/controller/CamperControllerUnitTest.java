@@ -37,29 +37,25 @@ class CamperControllerUnitTest {
 
     @Test
     void createCamper() {
-        //Mocking data
-        var camperDTO = CamperDTO.builder()
-                .name("Harry Olsen")
-                .age(12)
-                .username("hols12")
-                .password("pass1234")
-                .build();
+        // Mocking data
+        var camperDTO = new CamperDTO();
+        camperDTO.setName("Harry Olsen");
+        camperDTO.setAge(12);
+        camperDTO.setUsername("hols12");
+        camperDTO.setPassword("pass1234");
 
-        //Mocking service behavior
-        var createdCamperResponseDTO = CamperResponseDTO.builder()
-                .id(1L)
-                .name("Harry Olsen")
-                .age(12)
-                .build();
+        // Mocking service behavior
+        var createdCamperResponseDTO = new CamperResponseDTO();
+        createdCamperResponseDTO.setId(1L);
+        createdCamperResponseDTO.setName("Harry Olsen");
+        createdCamperResponseDTO.setAge(12);
 
         when(camperServiceMock.createCamper(any())).thenReturn(createdCamperResponseDTO);
 
-
-        //Testing the controller method
+        // Testing the controller method
         ResponseEntity<CamperResponseDTO> result = camperController.createCamper(camperDTO);
 
-
-        //Assertions
+        // Assertions
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
@@ -68,19 +64,19 @@ class CamperControllerUnitTest {
         assertEquals(createdCamperResponseDTO.getAge(), result.getBody().getAge());
     }
 
+
     @Test
     void getAllCampers_shouldReturnListOfCampers() {
         // Mocking data
-        Camper camper1 = Camper.builder()
-                .id(1L)
-                .name("Camper 1")
-                .age(15)
-                .build();
-        Camper camper2 = Camper.builder()
-                .id(2L)
-                .name("Camper 2")
-                .age(17)
-                .build();
+        Camper camper1 = new Camper();
+        camper1.setId(1L);
+        camper1.setName("Camper 1");
+        camper1.setAge(15);
+
+        Camper camper2 = new Camper();
+        camper2.setId(2L);
+        camper2.setName("Camper 2");
+        camper2.setAge(17);
 
         List<Camper> mockCampers = List.of(camper1, camper2);
 
@@ -88,11 +84,13 @@ class CamperControllerUnitTest {
 
         // Expected DTOs
         List<CamperResponseDTO> expectedDtos = mockCampers.stream()
-                .map(camper -> CamperResponseDTO.builder()
-                        .id(camper.getId())
-                        .name(camper.getName())
-                        .age(camper.getAge())
-                        .build())
+                .map(camper -> {
+                    CamperResponseDTO dto = new CamperResponseDTO();
+                    dto.setId(camper.getId());
+                    dto.setName(camper.getName());
+                    dto.setAge(camper.getAge());
+                    return dto;
+                })
                 .collect(Collectors.toList());
 
         // Testing the controller method
@@ -105,44 +103,41 @@ class CamperControllerUnitTest {
         assertEquals(expectedDtos, result.getBody());
     }
 
+
     // Helper method to create a sample Camper with activities
     private Camper createSampleCamperWithActivities(Long camperId) {
-        Camper camper = Camper.builder()
-                .id(camperId)
-                .name("Harry Olsen")
-                .age(12)
-                .username("hols12")
-                .password("pass1234")
-                .build();
+        Camper camper = new Camper();
+        camper.setId(camperId);
+        camper.setName("Harry Olsen");
+        camper.setAge(12);
+        camper.setUsername("hols12");
+        camper.setPassword("pass1234");
 
-        Activity activity1 = Activity.builder()
-                .id(1L)
-                .name("Hiking")
-                .difficulty(1)
-                .build();
+        Activity activity1 = new Activity();
+        activity1.setId(1L);
+        activity1.setName("Hiking");
+        activity1.setDifficulty(1);
 
-        Activity activity2 = Activity.builder()
-                .id(2L)
-                .name("Yoga")
-                .difficulty(1)
-                .build();
+        Activity activity2 = new Activity();
+        activity2.setId(2L);
+        activity2.setName("Yoga");
+        activity2.setDifficulty(1);
 
-        Signup signup1 = Signup.builder()
-                .id(1L)
-                .camper(camper)
-                .activity(activity1)
-                .build();
+        Signup signup1 = new Signup();
+        signup1.setId(1L);
+        signup1.setCamper(camper);
+        signup1.setActivity(activity1);
 
-        Signup signup2 = Signup.builder()
-                .id(2L)
-                .camper(camper)
-                .activity(activity2)
-                .build();
+        Signup signup2 = new Signup();
+        signup2.setId(2L);
+        signup2.setCamper(camper);
+        signup2.setActivity(activity2);
 
         camper.setSignups(List.of(signup1, signup2));
 
         return camper;
     }
+
 
     @Test
     void getCamperById_shouldReturnCamperWithActivities() {

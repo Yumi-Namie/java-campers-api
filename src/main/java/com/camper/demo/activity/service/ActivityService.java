@@ -48,13 +48,12 @@ public class ActivityService {
     }
 
     public Activity createActivity(ActivityDTO activityDTO) {
-        Activity newActivity = Activity.builder()
-                .name(activityDTO.getName())
-                .difficulty(activityDTO.getDifficulty())
-                .build();
-
+        Activity newActivity = new Activity();
+        newActivity.setName(activityDTO.getName());
+        newActivity.setDifficulty(activityDTO.getDifficulty());
         return activityRepository.save(newActivity);
     }
+
 
     public Activity updateActivity(Long id, @Valid ActivityDTO activityDTO) {
         Activity existingActivity = activityRepository.findById(id)
