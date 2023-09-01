@@ -11,6 +11,9 @@ public class SignupResponseDTO {
     private Long activityId;
     private Integer time;
 
+    public SignupResponseDTO() {
+    }
+
     public SignupResponseDTO(Long id, Long camperId, Long activityId, Integer time) {
         this.id = id;
         this.camperId = camperId;

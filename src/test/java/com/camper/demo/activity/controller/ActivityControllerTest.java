@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -24,11 +25,13 @@ class ActivityControllerTest {
     private ActivityController activityController;
     @Mock
     private ActivityService activityServiceMock;
+    private ModelMapper modelMapper;
 
     @BeforeEach
     void setUp() {
 
-        activityController = new ActivityController(activityServiceMock);
+        modelMapper = new ModelMapper();
+        activityController = new ActivityController(activityServiceMock, modelMapper);
     }
 
     @Test
