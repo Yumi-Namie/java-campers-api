@@ -43,29 +43,6 @@ public class CamperController {
         return ResponseEntity.ok().body(responseDTO);
     }
 
-    private CamperWithActivitiesDTO convertToResponseDtoWithActivities(Camper camper) {
-        CamperWithActivitiesDTO dto = new CamperWithActivitiesDTO();
-        dto.setId(camper.getId());
-        dto.setName(camper.getName());
-        dto.setAge(camper.getAge());
-
-        List<ActivityDTO> activityDTOs = camper.getSignups().stream()
-                .map(signup -> convertActivityToDto(signup.getActivity()))
-                .collect(Collectors.toList());
-        dto.setActivities(activityDTOs);
-
-        return dto;
-    }
-
-    private ActivityDTO convertActivityToDto(Activity activity) {
-        ActivityDTO dto = ActivityDTO.builder()
-                .id(activity.getId())
-                .name(activity.getName())
-                .difficulty(activity.getDifficulty())
-                .build();
-        return dto;
-    }
-
 
     @GetMapping("/campers")
     public ResponseEntity<List<CamperResponseDTO>> getAllCampers() {
@@ -76,13 +53,36 @@ public class CamperController {
         return ResponseEntity.ok().body(responseDTOs);
     }
 
-    private CamperResponseDTO convertToResponseDto(Camper camper) {
-        CamperResponseDTO dto = new CamperResponseDTO();
-        dto.setId(camper.getId());
-        dto.setName(camper.getName());
-        dto.setAge(camper.getAge());
+    private ActivityDTO convertActivityToDto(Activity activity) {
+        ActivityDTO dto = ActivityDTO.builder()
+                .id(activity.getId())
+                .name(activity.getName())
+                .difficulty(activity.getDifficulty())
+                .build();
         return dto;
     }
+    private CamperResponseDTO convertToResponseDto(Camper camper) {
+        return CamperResponseDTO.builder()
+                .id(camper.getId())
+                .name(camper.getName())
+                .age(camper.getAge())
+                .build();
+    }
+
+
+    private CamperWithActivitiesDTO convertToResponseDtoWithActivities(Camper camper) {
+        return CamperWithActivitiesDTO.builder()
+                .id(camper.getId())
+                .name(camper.getName())
+                .age(camper.getAge())
+                .activities(camper.getSignups().stream()
+                        .map(signup -> convertActivityToDto(signup.getActivity()))
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+
+
 }
 
 
