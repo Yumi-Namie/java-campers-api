@@ -97,7 +97,6 @@ class ActivityControllerTest {
     }
 
 
-
     @Test
     void createActivity_shouldReturnCreated() {
         // Mocking data

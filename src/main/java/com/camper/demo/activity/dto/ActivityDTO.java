@@ -23,5 +23,4 @@ public class ActivityDTO {
     @Max(value = 5, message = "Difficulty  should not exceed 5.")
     private Integer difficulty;
 
-
 }

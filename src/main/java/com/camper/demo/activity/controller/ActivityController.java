@@ -3,7 +3,6 @@ package com.camper.demo.activity.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 import com.camper.demo.activity.entity.Activity;
 import com.camper.demo.activity.dto.ActivityDTO;
 import com.camper.demo.activity.service.ActivityService;
