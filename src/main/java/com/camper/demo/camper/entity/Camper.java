@@ -1,6 +1,5 @@
 package com.camper.demo.camper.entity;
 
-import com.camper.demo.activity.entity.Activity;
 import com.camper.demo.signup.entity.Signup;
 import jakarta.persistence.*;
 import lombok.Builder;
