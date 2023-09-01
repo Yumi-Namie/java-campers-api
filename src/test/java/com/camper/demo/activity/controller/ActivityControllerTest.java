@@ -1,4 +1,3 @@
-/*
 package com.camper.demo.activity.controller;
 
 import com.camper.demo.activity.dto.ActivityDTO;
@@ -26,14 +25,13 @@ class ActivityControllerTest {
     private ActivityController activityController;
     @Mock
     private ActivityService activityServiceMock;
-    @Mock
     private ModelMapper modelMapper;
 
     @BeforeEach
     void setUp() {
 
+        modelMapper = new ModelMapper();
         activityController = new ActivityController(activityServiceMock, modelMapper);
-
     }
 
     @Test
@@ -175,4 +173,4 @@ class ActivityControllerTest {
         assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
     }
 
-}*/
+}

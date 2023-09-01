@@ -1,10 +1,14 @@
 package com.camper.demo.camper.controller;
 
+import com.camper.demo.activity.controller.ActivityController;
+import com.camper.demo.activity.dto.ActivityDTO;
 import com.camper.demo.activity.entity.Activity;
+import com.camper.demo.activity.service.ActivityService;
 import com.camper.demo.camper.dto.CamperDTO;
+import com.camper.demo.camper.dto.CamperMapper;
 import com.camper.demo.camper.dto.CamperResponseDTO;
-import com.camper.demo.camper.dto.CamperWithActivitiesDTO;
 import com.camper.demo.camper.entity.Camper;
+import com.camper.demo.camper.repository.CamperRepository;
 import com.camper.demo.camper.service.CamperService;
 
 import com.camper.demo.signup.entity.Signup;
@@ -26,13 +30,22 @@ import static org.mockito.Mockito.*;
 class CamperControllerUnitTest {
 
     private CamperController camperController;
+    private ActivityController activityController;
     @Mock
     private CamperService camperServiceMock;
+    @Mock
+    private ActivityService activityServiceMock;
+    @Mock
+    private CamperRepository camperRepositoryMock;
+    @Mock
+    private CamperMapper modelMapper;
 
     @BeforeEach
     void setUp() {
 
-        camperController = new CamperController(camperServiceMock);
+        modelMapper = new CamperMapper();
+        camperController = new CamperController(camperServiceMock, modelMapper, camperRepositoryMock);
+        activityController = new ActivityController(activityServiceMock, modelMapper);
     }
 
     @Test
@@ -140,29 +153,37 @@ class CamperControllerUnitTest {
 
 
     @Test
-    void getCamperById_shouldReturnCamperWithActivities() {
+    void updateActivity_shouldReturnUpdated() {
         // Mocking data
-        Long camperId = 1L;
-        Camper camper = createSampleCamperWithActivities(camperId);
+        var activityId = 1L;
+        var updatedActivityDTO = new ActivityDTO();
+        updatedActivityDTO.setId(activityId);
+        updatedActivityDTO.setName("Updated Activity");
+        updatedActivityDTO.setDifficulty(3);
 
-        when(camperServiceMock.getCamperById(camperId)).thenReturn(camper);
+        // Mocking service behavior
+        var updatedActivity = new Activity();
+        updatedActivity.setId(activityId);
+        updatedActivity.setName("Updated Activity");
+        updatedActivity.setDifficulty(3);
+
+
+        when(activityServiceMock.updateActivity(eq(activityId), any())).thenReturn(updatedActivity);
 
         // Testing the controller method
-        ResponseEntity<CamperWithActivitiesDTO> result = camperController.getCamperById(camperId);
+        ResponseEntity<ActivityDTO> result = activityController.updateActivity(activityId, updatedActivityDTO);
+
 
         // Assertions
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
-        assertEquals(camperId, result.getBody().getId());
-        assertEquals("Harry Olsen", result.getBody().getName());
-        assertEquals(12, result.getBody().getAge());
-        // You can add more assertions to verify the list of activities in the DTO
-        assertNotNull(result.getBody().getActivities());
-        assertEquals(2, result.getBody().getActivities().size());
-        assertEquals("Hiking", result.getBody().getActivities().get(0).getName());
-        assertEquals("Yoga", result.getBody().getActivities().get(1).getName());
+        assertEquals(updatedActivity.getId(), result.getBody().getId());
+        assertEquals(updatedActivity.getName(), result.getBody().getName());
+        assertEquals(updatedActivity.getDifficulty(), result.getBody().getDifficulty());
     }
+
+
 
 
 }
